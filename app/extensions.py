@@ -8,7 +8,7 @@ migrate: Migrate = Migrate()
 redis_client: FlaskRedis = FlaskRedis()
 
 
-def init_extensions(app: Flask) -> None:
+def init_extensions(app: Flask):
     db.init_app(app)
     migrate.init_app(app, db)
     redis_client.init_app(app)
