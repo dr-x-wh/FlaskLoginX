@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: api
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
