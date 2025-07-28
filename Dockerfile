@@ -7,4 +7,5 @@ WORKDIR /app
 COPY --from=builder /root/.local /root/.local
 COPY . .
 
+EXPOSE 9090
 CMD ["gunicorn", "-c", "gunicorn.py", "run:app"]
