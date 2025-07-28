@@ -1,10 +1,10 @@
-from flask import Blueprint, request, g
+from flask import Blueprint, request
 from werkzeug.routing import ValidationError
 
 from app.errors import BodyNotJsonError
 from app.services.user import UserService
 from app.utils.result import Result
-from app.utils.security import login_required
+from app.utils.security import login_required, SecurityUtils
 
 user_bp = Blueprint("user", __name__, url_prefix="/user")
 
@@ -25,7 +25,13 @@ def register():
     return Result.success()
 
 
+@user_bp.route("", methods=["DELETE"])
+@login_required
+def sign_out():
+    return Result.success(UserService.delete_user(SecurityUtils.get_current_user().get("id")))
+
+
 @user_bp.route("/info", methods=["GET"])
 @login_required
 def info():
-    return Result.success(g.current_user)
+    return Result.success(SecurityUtils.get_current_user())

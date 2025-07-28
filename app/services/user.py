@@ -33,3 +33,12 @@ class UserService:
         if user:
             return user
         return None
+
+    @staticmethod
+    def delete_user(user_id: int) -> bool:
+        db_user = User.query.get(user_id)
+        if db_user:
+            db.session.delete(db_user)
+            db.session.commit()
+            return True
+        return False

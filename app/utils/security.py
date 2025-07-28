@@ -27,6 +27,10 @@ class SecurityUtils:
             return True
         return False
 
+    @staticmethod
+    def get_current_user() -> dict:
+        return g.current_user
+
 
 def login_required(view_func):
     @wraps(view_func)
