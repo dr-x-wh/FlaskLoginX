@@ -3,11 +3,34 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    container_name: api
+    container_name: app-api
     restart: always
+    ports:
+      - "9090:9090"
     networks:
-      - app-network
+      - db-net
+
+  db:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456789aa
+    networks:
+      - db-net
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - db-net
 
 networks:
-  app-network:
+  db-net:
     driver: bridge
