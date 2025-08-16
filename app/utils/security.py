@@ -5,7 +5,7 @@ from functools import wraps
 import jwt
 from flask import current_app, request, g
 
-from app.extensions import redis_client
+from app.extensions import cache_client
 from app.services.user import UserService
 from app.utils.result import Result
 
@@ -15,7 +15,7 @@ class UserTools:
     def login(user_id: int) -> str:
         jwt_exp = datetime.now() + timedelta(seconds=current_app.config.get("JWT_ACCESS_TOKEN_EXPIRES"))
         token = str(uuid.uuid4().hex)
-        redis_client.set(f"USER_SESSION_{user_id}", token, current_app.config.get("JWT_ACCESS_TOKEN_EXPIRES"))
+        cache_client.set(f"USER_SESSION_{user_id}", token, current_app.config.get("JWT_ACCESS_TOKEN_EXPIRES"))
         payload = {"exp": jwt_exp.timestamp(), "iat": datetime.now().timestamp(), "sub": f"{user_id}",
                    "session_id": token, }
         return jwt.encode(payload=payload, key=current_app.config.get("JWT_SECRET_KEY"), algorithm="HS256")
@@ -23,7 +23,7 @@ class UserTools:
     @staticmethod
     def logout() -> bool:
         if user_id := g.current_user.get("id"):
-            redis_client.delete(f"USER_SESSION_{user_id}")
+            cache_client.delete(f"USER_SESSION_{user_id}")
             return True
         return False
 
