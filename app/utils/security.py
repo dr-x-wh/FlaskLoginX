@@ -10,7 +10,7 @@ from app.services.user import UserService
 from app.utils.result import Result
 
 
-class SecurityUtils:
+class UserTools:
     @staticmethod
     def login(user_id: int) -> str:
         jwt_exp = datetime.now() + timedelta(seconds=current_app.config.get("JWT_ACCESS_TOKEN_EXPIRES"))

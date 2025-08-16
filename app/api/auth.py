@@ -4,7 +4,7 @@ from werkzeug.routing import ValidationError
 from app.errors import BodyNotJsonError
 from app.services.user import UserService
 from app.utils.result import Result
-from app.utils.security import SecurityUtils, login_required
+from app.utils.security import UserTools, login_required
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -17,12 +17,10 @@ def login():
     if "username" not in user or "password" not in user:
         raise ValidationError()
     db_user = UserService.get_by_username(user["username"])
-    if not db_user:
-        return Result.error("账号密码错误")
-    if not db_user.check_password(user["password"]):
+    if not db_user or not db_user.check_password(user["password"]):
         return Result.error("账号密码错误")
 
-    jwt = SecurityUtils.login(db_user.id)
+    jwt = UserTools.login(db_user.id)
 
     return Result.success(jwt)
 
@@ -30,5 +28,5 @@ def login():
 @auth_bp.route("/logout", methods=["POST"])
 @login_required
 def logout():
-    SecurityUtils.logout()
+    UserTools.logout()
     return Result.success()
