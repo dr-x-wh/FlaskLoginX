@@ -61,10 +61,10 @@ def login_required(view_func):
             return Result.error("登陆失效", 4016, 401)
 
         session_id = payload.get('session_id')
-        redis_session_id = redis_client.get(f"USER_SESSION_{db_user.id}")
-        if not redis_session_id:
+        cache_session_id = cache_client.get(f"USER_SESSION_{db_user.id}")
+        if not cache_session_id:
             return Result.error("登陆失效", 4017, 401)
-        if redis_session_id.decode() != session_id:
+        if cache_session_id != session_id:
             return Result.error("您的账号已在其他地方登录", 4018, 401)
 
         g.current_user = {"id": db_user.id, "username": db_user.username}
