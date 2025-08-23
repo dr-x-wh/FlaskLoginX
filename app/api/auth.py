@@ -11,8 +11,6 @@ auth_bp = Blueprint("auth", __name__)
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    if not request.is_json:
-        raise BodyNotJsonError()
     user = request.json
     if "username" not in user or "password" not in user:
         raise ValidationError()

@@ -1,5 +1,6 @@
-.env.example
-.flaskenv
-.gitignore
-Dockerfile
-README.md
+__pycache__/
+.idea/
+.vscode/
+.venv/
+instance/
+web/

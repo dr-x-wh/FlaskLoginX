@@ -13,3 +13,10 @@ werkzeug
 
 python-dotenv
 gunicorn
+
+requests
+chardet
+
+apscheduler
+beautifulsoup4
+lxml

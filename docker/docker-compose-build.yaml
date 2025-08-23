@@ -1,6 +1,8 @@
 services:
   app-api:
-    image: crpi-q5oz9nsemoqwdm6f.cn-hangzhou.personal.cr.aliyuncs.com/dr-x/key-timeout:latest
+    build:
+      context: ..
+      dockerfile: Dockerfile
     container_name: app-api
     restart: always
     volumes:
